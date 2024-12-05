@@ -297,8 +297,21 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let leftSum = 0;
+  let rightSum = 0;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    rightSum += arr[i];
+  }
+  for (let i = 0; i < arr.length; i += 1) {
+    rightSum -= arr[i];
+    if (leftSum === rightSum) {
+      return i;
+    }
+    leftSum += arr[i];
+  }
+  return -1;
 }
 
 /**
@@ -490,8 +503,54 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const digits = [];
+  let newNumber = number;
+  while (newNumber > 0) {
+    digits.push(newNumber % 10);
+    newNumber = Math.floor(newNumber / 10);
+  }
+  digits.reverse();
+
+  const { length } = digits;
+
+  let firstDecreasingInx = length - 2;
+  while (
+    firstDecreasingInx >= 0 &&
+    digits[firstDecreasingInx] >= digits[firstDecreasingInx + 1]
+  ) {
+    firstDecreasingInx -= 1;
+  }
+
+  if (firstDecreasingInx < 0) {
+    return number;
+  }
+
+  let smallestLargerDecreasing = length - 1;
+  while (digits[smallestLargerDecreasing] <= digits[firstDecreasingInx]) {
+    smallestLargerDecreasing -= 1;
+  }
+
+  const temp = digits[firstDecreasingInx];
+  digits[firstDecreasingInx] = digits[smallestLargerDecreasing];
+  digits[smallestLargerDecreasing] = temp;
+
+  let left = firstDecreasingInx + 1;
+  let right = length - 1;
+  while (left < right) {
+    const swapTemp = digits[left];
+    digits[left] = digits[right];
+    digits[right] = swapTemp;
+    left += 1;
+    right -= 1;
+  }
+
+  let result = 0;
+  for (let i = 0; i < length; i += 1) {
+    result = result * 10 + digits[i];
+  }
+
+  return result;
 }
 
 module.exports = {
