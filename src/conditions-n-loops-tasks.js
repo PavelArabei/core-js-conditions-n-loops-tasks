@@ -482,9 +482,8 @@ function shuffleChar(str, iterations) {
   let newStr = str;
   const { length } = str;
 
-  const newIterations = iterations % length || length;
+  const newIterations = iterations % length || 100;
   if (newIterations === 0) return newStr;
-
   for (let i = 0; i < newIterations; i += 1) {
     let odd = '';
     let even = '';
